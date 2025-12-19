@@ -48,7 +48,7 @@ function StartAutoFarm()
     if connection then return end
     getgenv().AutoDura = true
 
-    connection = RunService.RenderStepped:Connect(function()
+    connection = RunService.Heartbeat:Connect(function()
         if not getgenv().AutoDura then return end
 
         local best = GetBestArea()
@@ -91,25 +91,13 @@ DuraTab:CreateToggle({
     end,
 })
 
+--[[
 
--- Just learnt getgenv(), sorry for inconsistency!
--- Global toggles
-getgenv().AutoUpgrade = false
-getgenv().UpgradeSpeed = 0.1 -- default speed
 
--- Button reference
-local btn = game:GetService("Players").LocalPlayer.PlayerGui.Main.Frames.Stats.Container.Stats["2"].Upgrade
+gap
 
--- Loop
-while true do
-    if getgenv().AutoUpgrade then
-        for _, conn in ipairs(getconnections(btn.MouseButton1Click)) do
-            conn:Fire()
-        end
-    end
 
-    task.wait(getgenv().UpgradeSpeed)
-end
+]]
 
 local DuraUpgradeTab = Window:CreateTab("Auto upgrade durability", 4483362458)
 
@@ -133,3 +121,21 @@ DuraUpgradeTab:CreateSlider({
         getgenv().UpgradeSpeed = value
     end,
 })
+
+-- Pro globals!!
+getgenv().AutoUpgrade = false
+getgenv().UpgradeSpeed = 0.1 -- default speed
+
+-- Button reference
+local btn = game:GetService("Players").LocalPlayer.PlayerGui.Main.Frames.Stats.Container.Stats["2"].Upgrade
+
+-- Loop
+while true do
+    if getgenv().AutoUpgrade then
+        for _, conn in ipairs(getconnections(btn.MouseButton1Click)) do
+            conn:Fire()
+        end
+    end
+
+    task.wait(getgenv().UpgradeSpeed)
+end

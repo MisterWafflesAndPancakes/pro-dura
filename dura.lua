@@ -4,21 +4,6 @@ local RunService = game:GetService("RunService")
 
 local durability = LocalPlayer.Stats["2"]
 
--- RAYFIELD UI
-local Rayfield = loadstring(game:HttpGet("https://sirius.menu/rayfield"))()
-
-local Window = Rayfield:CreateWindow({
-    Name = "Pro autofarm",
-    LoadingTitle = "Pro autofarm",
-    LoadingSubtitle = "Made by XestorIae",
-})
-
-local DuraTab = Window:CreateTab("Dura farm thing", 4483362458)
-local DuraUpgradeTab = Window:CreateTab("Auto upgrade durability", 4483362458)
-local InputTab = Window:CreateTab("Auto inputs", 4483362458)
-local TPTab = Window:CreateTab("Client sided block", 4483362458)
-
-
 -- stuff
 getgenv().AutoDura = false
 local connection
@@ -81,6 +66,17 @@ function StopAutoFarm()
     end
 end
 
+-- RAYFIELD UI
+local Rayfield = loadstring(game:HttpGet("https://sirius.menu/rayfield"))()
+
+local Window = Rayfield:CreateWindow({
+    Name = "Pro autofarm",
+    LoadingTitle = "Pro autofarm",
+    LoadingSubtitle = "Made by XestorIae",
+})
+
+local DuraTab = Window:CreateTab("Dura farm thing", 4483362458)
+
 DuraTab:CreateToggle({
     Name = "Auto Farm",
     CurrentValue = false,
@@ -101,15 +97,19 @@ getgenv().UpgradeSpeed = 0.1 -- default speed
 local btn = game:GetService("Players").LocalPlayer.PlayerGui.Main.Frames.Stats.Container.Stats["2"].Upgrade
 
 -- Loop
-while true do
-    if getgenv().AutoUpgrade then
-        for _, conn in ipairs(getconnections(btn.MouseButton1Click)) do
-            conn:Fire()
+task.spawn(function()
+    while true do
+        if getgenv().AutoUpgrade then
+            for _, conn in ipairs(getconnections(btn.MouseButton1Click)) do
+                conn:Fire()
+            end
         end
-    end
 
-    task.wait(getgenv().UpgradeSpeed)
-end
+        task.wait(getgenv().UpgradeSpeed)
+    end
+end)
+
+local DuraUpgradeTab = Window:CreateTab("Auto upgrade durability", 4483362458)
 
 -- Rayfield Toggle
 DuraUpgradeTab:CreateToggle({
@@ -140,23 +140,27 @@ getgenv().JumpSpam = false
 local VIM = game:GetService("VirtualInputManager")
 local UIS = game:GetService("UserInputService")
 
--- One loop this time, mbmb :Sob:
-while true do
-    -- Click spam
-    if getgenv().ClickSpam then
-        local pos = UIS:GetMouseLocation()
-        VIM:SendMouseButtonEvent(pos.X, pos.Y, 0, true, game, 0)
-        VIM:SendMouseButtonEvent(pos.X, pos.Y, 0, false, game, 0)
-    end
+-- forgot task.spawn exist..
+task.spawn(function()
+    while true do
+        -- Click spam
+        if getgenv().ClickSpam then
+            local pos = UIS:GetMouseLocation()
+            VIM:SendMouseButtonEvent(pos.X, pos.Y, 0, true, game, 0)
+            VIM:SendMouseButtonEvent(pos.X, pos.Y, 0, false, game, 0)
+        end
 
-    -- Jump spam
-    if getgenv().JumpSpam then
-        VIM:SendKeyEvent(true, Enum.KeyCode.Space, false, game)
-        VIM:SendKeyEvent(false, Enum.KeyCode.Space, false, game)
-    end
+        -- Jump spam
+        if getgenv().JumpSpam then
+            VIM:SendKeyEvent(true, Enum.KeyCode.Space, false, game)
+            VIM:SendKeyEvent(false, Enum.KeyCode.Space, false, game)
+        end
 
-    task.wait()
-end
+        task.wait()
+    end
+end)
+
+local InputTab = Window:CreateTab("Auto inputs", 4483362458)
 
 InputTab:CreateToggle({
     Name = "Click Spam",
@@ -209,6 +213,9 @@ end
 -- Apply hooks
 hookfunction(TS.Teleport, blockedTeleport)
 hookfunction(TS.TeleportToPlaceInstance, blockedTeleportInstance)
+
+local TPTab = Window:CreateTab("Client sided block", 4483362458)
+
 
 TPTab:CreateToggle({
     Name = "Prevent Auto rejoin",

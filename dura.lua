@@ -207,7 +207,7 @@ local oldTeleportToPlaceInstance = TS.TeleportToPlaceInstance
 
 -- Hooked versions
 local function blockedTeleport(...)
-    if getgenv().preventRejoin = false then
+    if getgenv().preventRejoin then
         Rayfield:Notify({
             Title = "Rejoin Blocked",
             Content = "The game attempted to rejoin you.",
@@ -219,7 +219,7 @@ local function blockedTeleport(...)
 end
 
 local function blockedTeleportInstance(...)
-    if getgenv().preventRejoin = false then
+    if getgenv().preventRejoin then
         Rayfield:Notify({
             Title = "Rejoin Blocked",
             Content = "The game attempted to rejoin you.",

@@ -4,6 +4,12 @@ local RunService = game:GetService("RunService")
 
 local durability = LocalPlayer.Stats["2"]
 
+local DuraTab = Window:CreateTab("Dura farm thing", 4483362458)
+local DuraUpgradeTab = Window:CreateTab("Auto upgrade durability", 4483362458)
+local InputTab = Window:CreateTab("Auto inputs", 4483362458)
+local TPTab = Window:CreateTab("Client sided block", 4483362458)
+
+
 -- stuff
 getgenv().AutoDura = false
 local connection
@@ -75,9 +81,6 @@ local Window = Rayfield:CreateWindow({
     LoadingSubtitle = "Made by XestorIae",
 })
 
-
-local DuraTab = Window:CreateTab("Dura farm thing", 4483362458)
-
 DuraTab:CreateToggle({
     Name = "Auto Farm",
     CurrentValue = false,
@@ -107,8 +110,6 @@ while true do
 
     task.wait(getgenv().UpgradeSpeed)
 end
-
-local DuraUpgradeTab = Window:CreateTab("Auto upgrade durability", 4483362458)
 
 -- Rayfield Toggle
 DuraUpgradeTab:CreateToggle({
@@ -156,8 +157,6 @@ while true do
 
     task.wait()
 end
-
-local InputTab = Window:CreateTab("Auto inputs", 4483362458)
 
 InputTab:CreateToggle({
     Name = "Click Spam",
@@ -210,8 +209,6 @@ end
 -- Apply hooks
 hookfunction(TS.Teleport, blockedTeleport)
 hookfunction(TS.TeleportToPlaceInstance, blockedTeleportInstance)
-
-local TPTab = Window:CreateTab("Client sided block")
 
 TPTab:CreateToggle({
     Name = "Prevent Auto rejoin",

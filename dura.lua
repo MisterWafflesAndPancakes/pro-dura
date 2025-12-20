@@ -4,6 +4,10 @@ local RunService = game:GetService("RunService")
 
 local durability = LocalPlayer.Stats["2"]
 
+-- stuff
+getgenv().AutoDura = false
+local connection
+
 -- Training areas
 local Areas = {
     { Name = "BlackFire", Path = workspace.Map.TrainingAreas.BlackFire, Requirement = 100e6 },
@@ -39,10 +43,6 @@ local function TeleportToModelCenter(model)
 
     root.CFrame = model:GetPivot() + Vector3.new(0, 5, 0)
 end
-
--- Autofarm loop
-getgenv().AutoDura = false
-local connection
 
 function StartAutoFarm()
     if connection then return end
@@ -91,13 +91,23 @@ DuraTab:CreateToggle({
     end,
 })
 
---[[
+-- Pro globals!!
+getgenv().AutoUpgrade = false
+getgenv().UpgradeSpeed = 0.1 -- default speed
 
+-- Button reference
+local btn = game:GetService("Players").LocalPlayer.PlayerGui.Main.Frames.Stats.Container.Stats["2"].Upgrade
 
-gap
+-- Loop
+while true do
+    if getgenv().AutoUpgrade then
+        for _, conn in ipairs(getconnections(btn.MouseButton1Click)) do
+            conn:Fire()
+        end
+    end
 
-
-]]
+    task.wait(getgenv().UpgradeSpeed)
+end
 
 local DuraUpgradeTab = Window:CreateTab("Auto upgrade durability", 4483362458)
 
@@ -122,50 +132,6 @@ DuraUpgradeTab:CreateSlider({
     end,
 })
 
--- Pro globals!!
-getgenv().AutoUpgrade = false
-getgenv().UpgradeSpeed = 0.1 -- default speed
-
--- Button reference
-local btn = game:GetService("Players").LocalPlayer.PlayerGui.Main.Frames.Stats.Container.Stats["2"].Upgrade
-
--- Loop
-while true do
-    if getgenv().AutoUpgrade then
-        for _, conn in ipairs(getconnections(btn.MouseButton1Click)) do
-            conn:Fire()
-        end
-    end
-
-    task.wait(getgenv().UpgradeSpeed)
-end
-
-
---[[
-
-
-gap
-
-
-]]
-
-local InputTab = Window:CreateTab("Auto inputs", 4483362458)
-
-InputTab:CreateToggle({
-    Name = "Click Spam",
-    CurrentValue = false,
-    Callback = function(Value)
-        getgenv().ClickSpam = Value
-    end,
-})
-
-InputTab:CreateToggle({
-    Name = "JumpSpam",
-    CurrentValue = false,
-    Callback = function(Value)
-        getgenv().JumpSpam = Value
-    end,
-})
 
 -- Global toggles
 getgenv().ClickSpam = false
@@ -192,24 +158,21 @@ while true do
     task.wait()
 end
 
-[[--
+local InputTab = Window:CreateTab("Auto inputs", 4483362458)
 
-
-gap
-]]
-
-local TPTab = Window:CreateTab("Client sided block")
-
-TPTab:CreateToggle({
-    Name = "Prevent Auto rejoin",
+InputTab:CreateToggle({
+    Name = "Click Spam",
     CurrentValue = false,
     Callback = function(Value)
-        getgenv().preventRejoin = Value
-        Rayfield:Notify({
-            Title = "Auto-Rejoin",
-            Content = Value and "Blocking rejoin attempts." or "Rejoin blocking disabled.",
-            Duration = 3
-        })
+        getgenv().ClickSpam = Value
+    end,
+})
+
+InputTab:CreateToggle({
+    Name = "JumpSpam",
+    CurrentValue = false,
+    Callback = function(Value)
+        getgenv().JumpSpam = Value
     end,
 })
 
@@ -248,3 +211,18 @@ end
 -- Apply hooks
 hookfunction(TS.Teleport, blockedTeleport)
 hookfunction(TS.TeleportToPlaceInstance, blockedTeleportInstance)
+
+local TPTab = Window:CreateTab("Client sided block")
+
+TPTab:CreateToggle({
+    Name = "Prevent Auto rejoin",
+    CurrentValue = false,
+    Callback = function(Value)
+        getgenv().preventRejoin = Value
+        Rayfield:Notify({
+            Title = "Auto-Rejoin",
+            Content = Value and "Blocking rejoin attempts." or "Rejoin blocking disabled.",
+            Duration = 3
+        })
+    end,
+})

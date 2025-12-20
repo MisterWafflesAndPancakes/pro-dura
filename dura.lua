@@ -136,6 +136,7 @@ DuraUpgradeTab:CreateSlider({
 -- Global toggles
 getgenv().ClickSpam = false
 getgenv().JumpSpam = false
+getgenv().InputDelay = 1
 
 local VIM = game:GetService("VirtualInputManager")
 local UIS = game:GetService("UserInputService")
@@ -156,7 +157,7 @@ task.spawn(function()
             VIM:SendKeyEvent(false, Enum.KeyCode.Space, false, game)
         end
 
-        task.wait()
+        task.wait(getgenv().InputDelay) -- new pro adjustment parameter 🔥🔥🔥
     end
 end)
 
@@ -178,6 +179,19 @@ InputTab:CreateToggle({
     end,
 })
 
+-- Rayfield Slider
+InputTab:CreateSlider({
+    Name = "Click Speed",
+    Range = {0.1, 5},
+    Increment = 0.1,
+    Suffix = "s",
+    CurrentValue = 1,
+    Callback = function(value)
+        getgenv().InputDelay = value
+    end,
+})
+
+-- CLIENT SIDE!!
 getgenv().preventRejoin = false
 local TS = game:GetService("TeleportService")
 
@@ -254,7 +268,7 @@ local function startBoxLoop()
     boxLoopThread = task.spawn(function()
         while getgenv().runningBoxes do
             scanForClickDetectors()
-            task.wait(boxDelay or 0.2) -- safe default
+            task.wait(boxDelay) -- safe default
         end
     end)
 end
@@ -267,7 +281,7 @@ local ClickTab = Window:CreateTab("Auto Chikara Box")
 
 ClickTab:CreateToggle({
     Name = "Auto Click Chikara Boxes",
-    CurrentValue = true,
+    CurrentValue = false,
     Callback = function(state)
         if state then
             startBoxLoop()

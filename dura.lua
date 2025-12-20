@@ -81,7 +81,6 @@ local DuraTab = Window:CreateTab("Dura farm thing", 4483362458)
 DuraTab:CreateToggle({
     Name = "Auto Farm",
     CurrentValue = false,
-    Flag = "AutoFarmToggle",
     Callback = function(state)
         if state then
             StartAutoFarm()

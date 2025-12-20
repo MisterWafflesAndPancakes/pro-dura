@@ -229,3 +229,61 @@ TPTab:CreateToggle({
         })
     end,
 })
+
+
+getgenv().runningBoxes = false
+local Boxes = workspace.Scriptable.ChikaraBoxes
+
+local function scanForClickDetectors()
+    for _, box in ipairs(Boxes:GetChildren()) do
+        for _, obj in ipairs(box:GetDescendants()) do
+            if obj:IsA("ClickDetector") and obj.Parent then
+                pcall(function()
+                    fireclickdetector(obj, 0)
+                end)
+            end
+        end
+    end
+end
+
+
+local function startBoxLoop()
+    if getgenv().runningBoxes then return end
+    getgenv().runningBoxes = true
+
+    boxLoopThread = task.spawn(function()
+        while getgenv().runningBoxes do
+            scanForClickDetectors()
+            task.wait(boxDelay or 0.2) -- safe default
+        end
+    end)
+end
+
+local function stopBoxLoop()
+    getgenv().runningBoxes = false
+end
+
+local ClickTab = Window:CreateTab("Auto Chikara Box")
+
+ClickTab:CreateToggle({
+    Name = "Auto Click Chikara Boxes",
+    CurrentValue = true,
+    Callback = function(state)
+        if state then
+            startBoxLoop()
+        else
+            stopBoxLoop()
+        end
+    end
+})
+
+ClickTab:CreateSlider({
+    Name = "Click delay",
+    Range = {0.1, 5},
+    Increment = 0.1,
+    Suffix = "s",
+    CurrentValue = 1,
+    Callback = function(value)
+        boxDelay = value
+    end
+})

@@ -157,26 +157,18 @@ getgenv().JumpSpam = false
 local VIM = game:GetService("VirtualInputManager")
 local UIS = game:GetService("UserInputService")
 
--- Spam loop
+-- One loop this time, mbmb :Sob:
 while true do
+    -- Click spam
     if getgenv().ClickSpam then
         local pos = UIS:GetMouseLocation()
-
-        -- Press
         VIM:SendMouseButtonEvent(pos.X, pos.Y, 0, true, game, 0)
-        -- Release
         VIM:SendMouseButtonEvent(pos.X, pos.Y, 0, false, game, 0)
     end
 
-    task.wait()
-end
-
--- Spam loop 2
-while true do
+    -- Jump spam
     if getgenv().JumpSpam then
-        -- Press
         VIM:SendKeyEvent(true, Enum.KeyCode.Space, false, game)
-        -- Release
         VIM:SendKeyEvent(false, Enum.KeyCode.Space, false, game)
     end
 
@@ -197,7 +189,7 @@ InputTab:CreateToggle({
     Name = "JumpSpam",
     CurrentValue = false,
     Callback = function(Value)
-        getgenv().JumpSPam = Value
+        getgenv().JumpSpam = Value
     end,
 })
 [[--

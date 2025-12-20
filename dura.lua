@@ -4,6 +4,15 @@ local RunService = game:GetService("RunService")
 
 local durability = LocalPlayer.Stats["2"]
 
+-- RAYFIELD UI
+local Rayfield = loadstring(game:HttpGet("https://sirius.menu/rayfield"))()
+
+local Window = Rayfield:CreateWindow({
+    Name = "Pro autofarm",
+    LoadingTitle = "Pro autofarm",
+    LoadingSubtitle = "Made by XestorIae",
+})
+
 local DuraTab = Window:CreateTab("Dura farm thing", 4483362458)
 local DuraUpgradeTab = Window:CreateTab("Auto upgrade durability", 4483362458)
 local InputTab = Window:CreateTab("Auto inputs", 4483362458)
@@ -71,15 +80,6 @@ function StopAutoFarm()
         connection = nil
     end
 end
-
--- RAYFIELD UI
-local Rayfield = loadstring(game:HttpGet("https://sirius.menu/rayfield"))()
-
-local Window = Rayfield:CreateWindow({
-    Name = "Pro autofarm",
-    LoadingTitle = "Pro autofarm",
-    LoadingSubtitle = "Made by XestorIae",
-})
 
 DuraTab:CreateToggle({
     Name = "Auto Farm",

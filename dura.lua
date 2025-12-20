@@ -7,8 +7,8 @@ local durability = LocalPlayer.Stats["2"]
 -- Training areas
 local Areas = {
     { Name = "BlackFire", Path = workspace.Map.TrainingAreas.BlackFire, Requirement = 100e6 },
-    { Name = "Hollow purple", Path = workspace.Map.TrainingAreas["Hollow purple"], Requirement = 50e12 },
-    { Name = "Founder", Path = workspace.Map.TrainingAreas.Founder, Requirement = 25e15 },
+    { Name = "Black Hole", Path = workspace.Map.TrainingAreas["Blackhole"], Requirement = 5e12 }, -- 5 trillion
+    { Name = "Founder", Path = workspace.Map.TrainingAreas.Founder, Requirement = 250e12 }, -- 250 trillion
     { Name = "King Kais", Path = workspace.Map.TrainingAreas["King Kais"], Requirement = 1e9 },
     { Name = "Time Chamber", Path = workspace.Map.TrainingAreas["Time Chamber"], Requirement = 100e9 },
 }

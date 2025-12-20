@@ -113,9 +113,9 @@ DuraUpgradeTab:CreateToggle({
 -- Rayfield Slider
 DuraUpgradeTab:CreateSlider({
     Name = "Upgrade Speed",
-    Range = {0.05, 1},
-    Increment = 0.05,
-    Suffix = "seconds",
+    Range = {0.2, 5},
+    Increment = 0.2,
+    Suffix = "s",
     CurrentValue = 0.1,
     Callback = function(value)
         getgenv().UpgradeSpeed = value
@@ -139,3 +139,64 @@ while true do
 
     task.wait(getgenv().UpgradeSpeed)
 end
+
+
+--[[
+
+
+gap
+
+
+]]
+
+
+-- Global toggle
+getgenv().ClickSpam = false
+getgenv().JumpSpam = false
+
+local VIM = game:GetService("VirtualInputManager")
+local UIS = game:GetService("UserInputService")
+
+-- Spam loop
+while true do
+    if getgenv().ClickSpam then
+        local pos = UIS:GetMouseLocation()
+
+        -- Press
+        VIM:SendMouseButtonEvent(pos.X, pos.Y, 0, true, game, 0)
+        -- Release
+        VIM:SendMouseButtonEvent(pos.X, pos.Y, 0, false, game, 0)
+    end
+
+    task.wait()
+end
+
+-- Spam loop 2
+while true do
+    if getgenv().JumpSpam then
+        -- Press
+        VIM:SendKeyEvent(true, Enum.KeyCode.Space, false, game)
+        -- Release
+        VIM:SendKeyEvent(false, Enum.KeyCode.Space, false, game)
+    end
+
+    task.wait()
+end
+
+local InputTab = Window:CreateTab("Auto inputs", 4483362458)
+
+InputTab:CreateToggle({
+    Name = "Click Spam",
+    CurrentValue = false,
+    Callback = function(Value)
+        getgenv().ClickSpam = Value
+    end,
+})
+
+InputTab:CreateToggle({
+    Name = "JumpSpam",
+    CurrentValue = false,
+    Callback = function(Value)
+        getgenv().JumpSPam = Value
+    end,
+})

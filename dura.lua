@@ -149,8 +149,25 @@ gap
 
 ]]
 
+local InputTab = Window:CreateTab("Auto inputs", 4483362458)
 
--- Global toggle
+InputTab:CreateToggle({
+    Name = "Click Spam",
+    CurrentValue = false,
+    Callback = function(Value)
+        getgenv().ClickSpam = Value
+    end,
+})
+
+InputTab:CreateToggle({
+    Name = "JumpSpam",
+    CurrentValue = false,
+    Callback = function(Value)
+        getgenv().JumpSpam = Value
+    end,
+})
+
+-- Global toggles
 getgenv().ClickSpam = false
 getgenv().JumpSpam = false
 
@@ -175,28 +192,26 @@ while true do
     task.wait()
 end
 
-local InputTab = Window:CreateTab("Auto inputs", 4483362458)
-
-InputTab:CreateToggle({
-    Name = "Click Spam",
-    CurrentValue = false,
-    Callback = function(Value)
-        getgenv().ClickSpam = Value
-    end,
-})
-
-InputTab:CreateToggle({
-    Name = "JumpSpam",
-    CurrentValue = false,
-    Callback = function(Value)
-        getgenv().JumpSpam = Value
-    end,
-})
 [[--
 
 
 gap
 ]]
+
+local TPTab = Window:CreateTab("Client sided block")
+
+TPTab:CreateToggle({
+    Name = "Prevent Auto rejoin",
+    CurrentValue = false,
+    Callback = function(Value)
+        getgenv().preventRejoin = Value
+        Rayfield:Notify({
+            Title = "Auto-Rejoin",
+            Content = Value and "Blocking rejoin attempts." or "Rejoin blocking disabled.",
+            Duration = 3
+        })
+    end,
+})
 
 getgenv().preventRejoin = false
 local TS = game:GetService("TeleportService")
@@ -233,18 +248,3 @@ end
 -- Apply hooks
 hookfunction(TS.Teleport, blockedTeleport)
 hookfunction(TS.TeleportToPlaceInstance, blockedTeleportInstance)
-
-local TPTab = Window:CreateTab("Client sided block")
-
-TPTab:CreateToggle({
-    Name = "Prevent Auto rejoin",
-    CurrentValue = false,
-    Callback = function(Value)
-        getgenv().preventRejoin = Value
-        Rayfield:Notify({
-            Title = "Auto-Rejoin",
-            Content = Value and "Blocking rejoin attempts." or "Rejoin blocking disabled.",
-            Duration = 3
-        })
-    end,
-})
